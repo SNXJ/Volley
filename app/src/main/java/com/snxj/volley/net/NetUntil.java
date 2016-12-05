@@ -2,6 +2,7 @@ package com.snxj.volley.net;
 
 import android.content.Context;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.snxj.volley.untils.LogUtils;
@@ -10,6 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.Map;
+
 /**
  * @author Sheng XiaoJie .
  * @Date 2016/12/2
@@ -18,16 +20,11 @@ import java.util.Map;
 
 public class NetUntil {
     private static Context context;
-    private static DataRequester.Method netMethod = DataRequester.Method.POST;
+    private static DataRequester.Method netMethod = DataRequester.Method.POST;//默认
     private static NetUntil mInstance;
 
-    public static NetUntil newInstance(Context mContext, String method) {
+    public static NetUntil newInstance(Context mContext) {
         context = mContext;
-         if ("GET".equals(method)) {
-            netMethod = DataRequester.Method.GET;
-        }else if ("POST".equals(method)) {
-             netMethod = DataRequester.Method.POST;
-         }
         if (mInstance == null) {
             synchronized (NetUntil.class) {
                 if (mInstance == null) {
@@ -37,6 +34,35 @@ public class NetUntil {
         }
         return mInstance;
     }
+
+    /**
+     * POST https
+     *
+     * @param url
+     * @param paramsMap
+     * @param clz              实体类
+     * @param responseListener
+     */
+    public void doPostHttps(String url, Map<String, String> paramsMap, final Class clz, final ResponseListener responseListener) {
+        netMethod = DataRequester.Method.POST;
+        requestStrHTTPS(url, paramsMap, clz, responseListener);
+    }
+
+    /**
+     * GET https
+     *
+     * @param url
+     * @param paramsMap
+     * @param clz              实体类
+     * @param responseListener
+     */
+    public void doGetHttps(String url, Map<String, String> paramsMap, final Class clz, final ResponseListener responseListener) {
+        netMethod = DataRequester.Method.GET;
+        requestStrHTTPS(url, paramsMap, clz, responseListener);
+    }
+
+
+/*********************************************只对外暴漏Https StringRequest的POST和GET方法*****************************************************************/
     /**
      * HTTPS  String请求
      * 默认证书
@@ -47,18 +73,19 @@ public class NetUntil {
      * @param responseListener
      */
 
-    public  void requestStrHTTPS(String url, Map<String, String> paramsMap, final Class clz, final ResponseListener responseListener) {
+    private void requestStrHTTPS(String url, Map<String, String> paramsMap, final Class clz, final ResponseListener responseListener) {
         DataRequester.withDefaultHttps(context).setUrl(url).setBody(paramsMap).setMethod(netMethod).setStringResponseListener(new DataRequester.StringResponseListener() {
             @Override
             public void onResponse(String response) {
-                responseListener.responSuccess(new GsonUntil().GsonString(response, clz));
+                responseListener.responSuccess(new GsonParser().GsonString(response, clz));
                 resultLog(response.toString());
             }
         }).setResponseErrorListener(new DataRequester.ResponseErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, ErrorHelper.getErrorMsg(error, context), Toast.LENGTH_SHORT).show();
                 responseListener.resonError(error);
-                resultLog(error.toString());
+                LogUtils.i("++++++++qdw+++++++++", "errorCode=" +  ErrorHelper.getErrorMsg(error,context));
             }
         }).requestString();
     }
@@ -72,11 +99,11 @@ public class NetUntil {
      * @param clz
      * @param responseListener
      */
-    public  void requestJsonHTTPS(String url, JSONObject jsonBody, final Class clz, final ResponseListener responseListener) {
+    private void requestJsonHTTPS(String url, JSONObject jsonBody, final Class clz, final ResponseListener responseListener) {
         DataRequester.withDefaultHttps(context).setUrl(url).setBody(jsonBody).setMethod(netMethod).setJsonResponseListener(new DataRequester.JsonResponseListener() {
             @Override
             public void onResponse(JSONObject response) {
-                responseListener.responSuccess(new GsonUntil().GsonJson(response, clz));
+                responseListener.responSuccess(new GsonParser().GsonJson(response, clz));
                 resultLog(response.toString());
 
             }
@@ -84,10 +111,11 @@ public class NetUntil {
             @Override
             public void onErrorResponse(VolleyError error) {
                 responseListener.resonError(error);
-                resultLog(error.toString());
+                LogUtils.i("++++++++qdw+++++++++", "errorCode=" +  ErrorHelper.getErrorMsg(error,context));
             }
         }).requestJson();
     }
+
     /**
      * HTTPS  JSONArray请求
      * 默认证书
@@ -97,17 +125,17 @@ public class NetUntil {
      * @param clz
      * @param responseListener
      */
-    public  void requestJsonArrayHTTPS(String url, Map<String, String> paramsMap, final Class clz, final ResponseListener responseListener) {
+    private void requestJsonArrayHTTPS(String url, Map<String, String> paramsMap, final Class clz, final ResponseListener responseListener) {
         DataRequester.withDefaultHttps(context).setUrl(url).setBody(paramsMap).setJsonArrayResponseListener(new DataRequester.JsonArrayResponseListener() {
             @Override
             public void onResponse(JSONArray response) {
-                responseListener.responSuccess(new GsonUntil().GsonJsonArray(response, clz));
+                responseListener.responSuccess(new GsonParser().GsonJsonArray(response, clz));
             }
         }).setResponseErrorListener(new DataRequester.ResponseErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 responseListener.resonError(error);
-                resultLog(error.toString());
+                LogUtils.i("++++++++qdw+++++++++", "errorCode=" +  ErrorHelper.getErrorMsg(error,context));
             }
         }).requestJsonArray();
     }
@@ -120,7 +148,7 @@ public class NetUntil {
      * @param clz
      * @param responseListener
      */
-    public  void requestStrHTTP(String url, Map<String, String> paramsMap, final Class clz, final ResponseListener responseListener) {
+    private void requestStrHTTP(String url, Map<String, String> paramsMap, final Class clz, final ResponseListener responseListener) {
         DataRequester.withHttp(context).setUrl(url).setMethod(netMethod).setBody(paramsMap)
                 .setResponseErrorListener(new DataRequester.ResponseErrorListener() {
                     @Override
@@ -131,7 +159,7 @@ public class NetUntil {
                 }).setStringResponseListener(new DataRequester.StringResponseListener() {
             @Override
             public void onResponse(String response) {
-                responseListener.responSuccess(new GsonUntil().GsonString(response, clz));
+                responseListener.responSuccess(new GsonParser().GsonString(response, clz));
                 resultLog(response.toString());
             }
         }).requestString();
@@ -145,7 +173,7 @@ public class NetUntil {
      * @param clz
      * @param responseListener
      */
-    public  void requestJsonHTTP(String url, Map<String, String> paramsMap, final Class clz, final ResponseListener responseListener) {
+    private void requestJsonHTTP(String url, Map<String, String> paramsMap, final Class clz, final ResponseListener responseListener) {
         DataRequester.withHttp(context).setUrl(url).setBody(paramsMap)
                 .setResponseErrorListener(new DataRequester.ResponseErrorListener() {
                     @Override
@@ -156,7 +184,7 @@ public class NetUntil {
                 }).setJsonResponseListener(new DataRequester.JsonResponseListener() {
             @Override
             public void onResponse(JSONObject response) {
-                responseListener.responSuccess(new GsonUntil().GsonJson(response, clz));
+                responseListener.responSuccess(new GsonParser().GsonJson(response, clz));
                 resultLog(response.toString());
             }
         }).requestJson();
@@ -164,11 +192,12 @@ public class NetUntil {
 
     /**
      * HTTP 获取图片
+     *
      * @param iv
      * @param url
      * @param dafaultRes
      */
-    public void requestImage(ImageView iv, String url , int dafaultRes) {
+    public void requestImage(ImageView iv, String url, int dafaultRes) {
         DataRequester.withHttp(context)
                 .setUrl(url)
                 .setMethod(DataRequester.Method.GET)//GET
@@ -177,8 +206,9 @@ public class NetUntil {
                 .setFailImage(dafaultRes)
                 .requestImage();
     }
-    private  void resultLog(String str) {
-        LogUtils.i("++++++++QDW+++++++++", "result=" + str);
+
+    private void resultLog(String str) {
+        LogUtils.i("++++++++qdw+++++++++", "Result=" +str );
     }
 
 
