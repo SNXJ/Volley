@@ -14,7 +14,7 @@ import java.util.List;
  * @Date 2016/12/2
  * @describe *
  */
-public class GsonUntil<T> {
+public class GsonParser<T> {
     public T GsonString(String resStr, Class<T> clz) {
         JSONObject json = null;
         try {

@@ -25,7 +25,8 @@ import javax.net.ssl.SSLSocketFactory;
 
 public class BaseApplication extends Application {
     private static BaseApplication mInstance ;
-
+    /**获取主线程的上下文对象 */
+    private static BaseApplication context;
     /** 创建http请求队列 */
     private RequestQueue mRequestQueueWithHttp ;
     /** 创建自定义证书的Https请求队列 */
@@ -36,6 +37,7 @@ public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        this.context = this;
         mInstance = this ;
     }
 
@@ -43,7 +45,10 @@ public class BaseApplication extends Application {
     public static BaseApplication getInstance(){
         return mInstance ;
     }
-
+    /* 对外暴露上下文对象 */
+    public static BaseApplication getApplication() {
+        return context;
+    }
     /**
      * 获取http请求队列
      * @return
@@ -55,8 +60,6 @@ public class BaseApplication extends Application {
         }
         return mRequestQueueWithHttp ;
     }
-
-
     /**
      * 获取默认证书https请求队列
      * @return
@@ -69,7 +72,6 @@ public class BaseApplication extends Application {
             mRequestQueueWithDefaultSsl.start();
             SSLCertificateValidation.trustAllCertificate();
         }
-
         return mRequestQueueWithDefaultSsl ;
     }
 
@@ -94,7 +96,6 @@ public class BaseApplication extends Application {
                 }
             });
         }
-
         return mRequestQueueWithSelfCertifiedSsl ;
     }
 
