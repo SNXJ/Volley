@@ -18,6 +18,8 @@ import com.snxj.volley.untils.LogUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Map;
 
 /**
@@ -234,6 +236,22 @@ public class DataRequester {
                     url,
                     mStringResponseListener,
                     mResponseErrorListener) {
+                @Override
+                public byte[] getBody() throws AuthFailureError {
+                    StringBuilder encodedParams = new StringBuilder();
+                    //判空
+                    try {
+                        for (Map.Entry<String, String> entry : mapBody.entrySet()) {
+                            encodedParams.append(URLEncoder.encode(entry.getKey(), "UTF-8"));
+                            encodedParams.append('=');
+                            encodedParams.append(URLEncoder.encode(entry.getValue()==null ? "":entry.getValue(), "UTF-8"));
+                            encodedParams.append('&');
+                        }
+                        return encodedParams.toString().getBytes("UTF-8");
+                    } catch (UnsupportedEncodingException uee) {
+                        throw new RuntimeException("Encoding not supported: " + "UTF-8", uee);
+                    }
+                }
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
                     return mapBody;
