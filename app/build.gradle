@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 24
-    buildToolsVersion "24.0.0"
+    buildToolsVersion "25.0.0"
     defaultConfig {
         applicationId "com.snxj.volley"
         minSdkVersion 21
@@ -29,4 +29,8 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'eu.the4thfloor.volley:com.android.volley:2015.05.28'
     compile 'io.github.openfeign:feign-gson:9.4.0'
+//tinker
+    provided("com.tencent.tinker:tinker-android-anno:1.7.6")
+    compile("com.tinkerpatch.sdk:tinkerpatch-android-sdk:1.0.1")
 }
+apply from: 'tinkerpatch.gradle'
