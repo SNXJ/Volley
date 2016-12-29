@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        release {
+            keyAlias 'volley'
+            keyPassword '562300'
+            storeFile file('C:/Users/IThelp/Desktop/volley_key/volley_key.jks')
+            storePassword '562300'
+        }
+    }
     compileSdkVersion 24
     buildToolsVersion "25.0.0"
     defaultConfig {
@@ -13,9 +21,20 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            zipAlignEnabled true
+            shrinkResources true
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+       // signingConfigs {
+//            release{
+//                storeFile rootProject.file("C:/Users/IThelp/Desktop/volley_key/volley_key.jks")
+//            }
+//            debug {
+//                storeFile rootProject.file("keystore/debug.keystore")
+//            }
+      //  }
     }
 }
 
@@ -29,8 +48,9 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'eu.the4thfloor.volley:com.android.volley:2015.05.28'
     compile 'io.github.openfeign:feign-gson:9.4.0'
-//tinker
-    provided("com.tencent.tinker:tinker-android-anno:1.7.6")
-    compile("com.tinkerpatch.sdk:tinkerpatch-android-sdk:1.0.1")
+    //tinker
+    provided 'com.tencent.tinker:tinker-android-anno:1.7.6'
+    compile 'com.tinkerpatch.sdk:tinkerpatch-android-sdk:1.0.1'
+    compile "com.android.support:multidex:1.0.1"
 }
 apply from: 'tinkerpatch.gradle'

@@ -1,8 +1,8 @@
 apply plugin: 'tinkerpatch-support'
 
-def bakPath = file("${buildDir}/bakApk/")
+def bakPath = file("E:/AS_Space/Volley/app/build/bakApk/")
 
-def appName = "app-1.0.0-1223-13-41-43"
+def appName = "app-1.0.0-1229-14-47-15"
 
 /**
  * 对于插件各参数的详细解析请参考
@@ -12,12 +12,10 @@ tinkerpatchSupport {
     tinkerEnable = true
     appKey = "541fdd4f8f8a4e9d"
     appVersion = "1.0.0"
-
     autoBackupApkPath = "${bakPath}"
-
-    baseApkFile = "${bakPath}/${appName}/app-debug.apk"
-    baseProguardMappingFile = "${bakPath}/${appName}/app-debug-mapping.txt"
-    baseResourceRFile = "${bakPath}/${appName}/app-debug-R.txt"
+    baseApkFile = "${bakPath}/${appName}/app-release.apk"
+    baseProguardMappingFile = "${bakPath}/${appName}/app-release-mapping.txt"
+    baseResourceRFile = "${bakPath}/${appName}/app-release-R.txt"
 }
 /**
  * 1运行 assembleRelease task 构建基准包，即将要发布的版本；

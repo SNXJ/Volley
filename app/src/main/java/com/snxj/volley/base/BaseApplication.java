@@ -39,6 +39,8 @@ public class BaseApplication extends Application {
         super.onCreate();
         this.context = this;
         mInstance = this ;
+//Tinker
+       // TinkerPatch.init(TinkerPatchApplicationLike.getTinkerPatchApplicationLike());
     }
 
     /**通过单例模式获取对象*/

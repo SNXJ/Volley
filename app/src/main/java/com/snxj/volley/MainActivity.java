@@ -49,8 +49,8 @@ public class MainActivity extends AppCompatActivity {
     public void requestHTTPsTest() {
         Map<String, String> paramsMap = new TreeMap<>();
         paramsMap.put("terminal", "2");
-        paramsMap.put("phone", "17090094674");
-        paramsMap.put("password", "123qwe");
+        paramsMap.put("phone", "170");
+        paramsMap.put("password", "12");
         NetApi.doPost(MainActivity.this, NetApi.LOGIN_URL, paramsMap, UserModel.class, responseListener);
     }
 }
