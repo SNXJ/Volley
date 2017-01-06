@@ -16,5 +16,5 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="volley https with tinker" />
+        android:text="@string/main_test" />
 </RelativeLayout>

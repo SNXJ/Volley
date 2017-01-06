@@ -1,8 +1,8 @@
 apply plugin: 'tinkerpatch-support'
 
-def bakPath = file("E:/AS_Space/Volley/app/build/bakApk/")
+def bakPath = file("${buildDir}/bakApk/")
 
-def appName = "app-1.0.0-1229-14-47-15"
+def appName = "my_app-2.1.0"
 
 /**
  * 对于插件各参数的详细解析请参考
@@ -11,14 +11,15 @@ def appName = "app-1.0.0-1229-14-47-15"
 tinkerpatchSupport {
     tinkerEnable = true
     appKey = "541fdd4f8f8a4e9d"
-    appVersion = "1.0.0"
+    appVersion = "2.1.0"
+    reflectApplication = true
     autoBackupApkPath = "${bakPath}"
     baseApkFile = "${bakPath}/${appName}/app-release.apk"
     baseProguardMappingFile = "${bakPath}/${appName}/app-release-mapping.txt"
     baseResourceRFile = "${bakPath}/${appName}/app-release-R.txt"
 }
 /**
- * 1运行 assembleRelease task 构建基准包，即将要发布的版本；
+ * 1运行 assembleRelease task 构建基准包，即将要发布的版本；gradle
  2通过 autoBackupApkPath 保存编译的产物 apk/mapping.txt/R.txt 文件；
  3若想发布补丁包， 只需将步骤2保存下来的文件分别填到 baseApkFile/baseProguardMappingFile/baseResourceRFile 参数中；
  4运行 tinkerPatchRelease task 构建补丁包，补丁包将位于 build/outputs/tinkerPatch 中。
