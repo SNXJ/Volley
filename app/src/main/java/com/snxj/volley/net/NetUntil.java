@@ -1,9 +1,12 @@
 package com.snxj.volley.net;
+
 import android.content.Context;
 import android.widget.ImageView;
 import android.widget.Toast;
+
 import com.android.volley.VolleyError;
 import com.snxj.volley.untils.LogUtils;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -18,8 +21,12 @@ import java.util.Map;
 
 public class NetUntil {
     private static Context context;
+    //定义一个静态私有变量(不初始化，不使用final关键字，使用volatile保证了多线程访问时instance变量的可见性，避免了instance初始化时其他变量属性还没赋值完时，被另外线程调用)
+    private static volatile NetUntil mInstance;
     private static DataRequester.Method netMethod = DataRequester.Method.POST;// 默认
-    private static NetUntil mInstance;
+
+    private NetUntil() {
+    } //私有
 
     public static NetUntil newInstance(Context mContext) {
         context = mContext;
@@ -35,12 +42,11 @@ public class NetUntil {
 
     /**
      * POST https
-     * @param <T>
      *
+     * @param <T>
      * @param url
      * @param paramsMap
-     * @param clz
-     *            实体类
+     * @param clz              实体类
      * @param responseListener
      */
 
@@ -52,12 +58,11 @@ public class NetUntil {
 
     /**
      * GET https
-     * @param <T>
      *
+     * @param <T>
      * @param url
      * @param paramsMap
-     * @param clz
-     *            实体类
+     * @param clz              实体类
      * @param responseListener
      */
     public <T> void doGetHttps(String url, Map<String, String> paramsMap,
@@ -66,14 +71,17 @@ public class NetUntil {
         requestStrHTTPS(url, paramsMap, clz, responseListener);
     }
 
-    /********************************************* 只对外暴漏Https StringRequest的POST和GET方法 *****************************************************************/
+    /*********************************************
+     * 只对外暴漏Https StringRequest的POST和GET方法
+     *****************************************************************/
     public void doPostHttpsStr(String url, Map<String, String> paramsMap, final ResponseListener<?> responseListener) {
         netMethod = DataRequester.Method.POST;
     }
+
     /**
      * HTTPS String请求 默认证书
-     * @param <T>
      *
+     * @param <T>
      * @param url
      * @param paramsMap
      * @param clz
@@ -92,10 +100,10 @@ public class NetUntil {
                             @SuppressWarnings("unchecked")
                             public void onResponse(String response) {
                                 resultLog(response.toString());
-                                if(null ==clz){
+                                if (null == clz) {
                                     responseListener.responSuccess((T) response);
 
-                                }else{
+                                } else {
                                     responseListener.responSuccess(new GsonParser<T>().GsonString(response, clz));
                                 }
                             }
@@ -109,7 +117,7 @@ public class NetUntil {
                                         ErrorHelper.getErrorMsg(error, context),
                                         Toast.LENGTH_SHORT).show();
                                 LogUtils.i(
-                                        "++++qdw++++",
+                                        "++++++++",
                                         "errorCode="
                                                 + ErrorHelper.getErrorMsg(
                                                 error, context));
@@ -119,8 +127,8 @@ public class NetUntil {
 
     /**
      * HTTPS JSON请求 默认证书
-     * @param <T>
      *
+     * @param <T>
      * @param url
      * @param jsonBody
      * @param clz
@@ -150,7 +158,7 @@ public class NetUntil {
                             public void onErrorResponse(VolleyError error) {
                                 //	responseListener.resonError(error);
                                 LogUtils.i(
-                                        "++++qdw++++",
+                                        "++++++++",
                                         "errorCode="
                                                 + ErrorHelper.getErrorMsg(
                                                 error, context));
@@ -160,8 +168,8 @@ public class NetUntil {
 
     /**
      * HTTPS JSONArray请求 默认证书
-     * @param <T>
      *
+     * @param <T>
      * @param url
      * @param paramsMap
      * @param clz
@@ -188,7 +196,7 @@ public class NetUntil {
                             @Override
                             public void onErrorResponse(VolleyError error) {
                                 LogUtils.i(
-                                        "++++++++qdw+++++++++",
+                                        "+++++++++++++++++",
                                         "errorCode="
                                                 + ErrorHelper.getErrorMsg(
                                                 error, context));
@@ -198,8 +206,8 @@ public class NetUntil {
 
     /**
      * http String请求
-     * @param <T>
      *
+     * @param <T>
      * @param url
      * @param paramsMap
      * @param clz
@@ -234,8 +242,8 @@ public class NetUntil {
 
     /**
      * HTTP JSON请求
-     * @param <T>
      *
+     * @param <T>
      * @param url
      * @param paramsMap
      * @param clz
@@ -282,7 +290,7 @@ public class NetUntil {
     }
 
     private void resultLog(String str) {
-        LogUtils.i("++++qdw++++", "Result=" + str);
+        LogUtils.i("++++++++", "Result=" + str);
     }
 
 }

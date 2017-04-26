@@ -2,7 +2,7 @@ apply plugin: 'tinkerpatch-support'
 
 def bakPath = file("${buildDir}/bakApk/")
 
-def appName = "my_app-2.1.0"
+def appName = "app-2.1.0-0426-10-34-01"
 
 /**
  * 对于插件各参数的详细解析请参考
