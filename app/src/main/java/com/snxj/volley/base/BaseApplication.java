@@ -2,6 +2,7 @@ package com.snxj.volley.base;
 
 import android.app.Application;
 import android.content.Context;
+import android.os.Handler;
 import android.support.multidex.MultiDex;
 import android.util.Log;
 
@@ -36,15 +37,19 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocketFactory;
 
 /**
- * @author Sheng XiaoJie .
- * @Date 2016/12/2
- * @describe *
+ * @author Sheng XiaoJie
+ * @date   2016/12/2
+ * @desc
  */
 
 public class BaseApplication extends Application {
     private static BaseApplication mInstance ;
     /**获取主线程的上下文对象 */
     private static BaseApplication context;
+    /** 获取主线程ID */
+    private static int mMainThreadId;
+    /** 获取到主线程的Handler */
+    private static Handler mainThreadHandler;
     /** 创建http请求队列 */
     private RequestQueue mRequestQueueWithHttp ;
     /** 创建自定义证书的Https请求队列 */
@@ -57,10 +62,20 @@ public class BaseApplication extends Application {
     public static BaseApplication getInstance(){
         return mInstance ;
     }
-    /* 对外暴露上下文对象 */
+    /**对外暴露上下文对象 */
     public static BaseApplication getApplication() {
         return context;
     }
+    /**对外暴露主线程的ID */
+    public static int getMainThreadId() {
+        return mMainThreadId;
+    }
+
+    /**对外暴露主线程的handler */
+    public static Handler getMainThreadHandler() {
+        return mainThreadHandler;
+    }
+
     /**
      * 获取http请求队列
      * @return

@@ -1,184 +1,159 @@
 package com.snxj.volley.untils;
 
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.content.Context;
+import android.os.Build;
+import android.os.StrictMode;
 import android.util.Log;
+import android.widget.Toast;
 
 /**
- * @author Sheng XiaoJie .
- * @Date 2016/12/2
- * @describe *
+ * 自定义Log工具类
  */
-
+@SuppressLint("NewApi")
+@TargetApi(Build.VERSION_CODES.GINGERBREAD)
 public class LogUtils {
+    private static final int TOAST = 0;
+    private static final int ERROR = 1;
+    private static final int WARN = 2;
+    private static final int INFO = 3;
+    private static final int DEBUG = 4;
+    private static final int VERBOSE = 5;
+    private static final int DEFEAT = 6;
+    private static final int STRICTMODE = 7;
+    public static final String TAG = "QDW_SDK:";
     /**
-     * 日志输出级别NONE
+     * 注:如果不要打印某一类log,那么只要把LOG_LEVEL值调到与其相等就可以了.当LOG_LEVEL为0时全部不打印 1时只打印toast 8
      */
-
-    public static final int LEVEL_NONE = 0;
-
-    /**
-     * 日志输出级别V
-     */
-
-    public static final int LEVEL_VERBOSE = 1;
-
-    /**
-     * 日志输出级别D
-     */
-
-    public static final int LEVEL_DEBUG = 2;
+    public static final int LOG_LEVEL = 8;
 
     /**
-     * 日志输出级别I
+     * 默认Log,级别最低
      */
+    public static void a() {
+        if (LOG_LEVEL > DEFEAT) {
 
-    public static final int LEVEL_INFO = 3;
-
-    /**
-     * 日志输出级别W
-     */
-
-    public static final int LEVEL_WARN = 4;
-
-    /**
-     * 日志输出级别E
-     */
-
-    public static final int LEVEL_ERROR = 5;
-
-    /** 日志输出时的TAG */
-
-
-    /**
-     * 是否允许输出log
-     */
-
-    private static int mDebuggable = 6;
-
-
-    /**
-     * 以级别为 d 的形式输出LOG
-     */
-
-    public static void v(String mTag, String msg) {
-
-        if (mDebuggable >= LEVEL_VERBOSE) {
-
-            Log.v(mTag, msg);
-
+            Log.d(TAG, "--------log打印了---------");
         }
-
     }
 
     /**
-     * 以级别为 d 的形式输出LOG
+     * 级别为5,总共为6个等级,越大表示越不重要,越容易关闭.
+     *
+     * @param tag
+     * @param msg
      */
-
-    public static void d(String mTag, String msg) {
-
-        if (mDebuggable >= LEVEL_DEBUG) {
-
-            Log.d(mTag, msg);
-
+    public static void v(String tag, String msg) {
+        if (LOG_LEVEL > VERBOSE) {
+            if (tag == null) {
+                tag = TAG;
+            }
+            Log.v(tag, msg);
         }
-
     }
 
     /**
-     * 以级别为 i 的形式输出LOG
+     * 级别为7,总共为6个等级,越大表示越不重要,越容易关闭.
+     *
+     * @param msg
      */
-
-    public static void i(String mTag, String msg) {
-
-        if (mDebuggable >= LEVEL_INFO) {
-
-            Log.i(mTag, msg);
-
+    public static void d(String msg) {
+        if (LOG_LEVEL > VERBOSE) {
+            Log.v(TAG, msg);
         }
-
     }
 
     /**
-     * 以级别为 w 的形式输出LOG
+     * 级别为4,总共为6个等级,越大表示越不重要,越容易关闭.
+     *
+     * @param tag
+     * @param msg
      */
-
-    public static void w(String mTag, String msg) {
-
-        if (mDebuggable >= LEVEL_WARN) {
-
-            Log.w(mTag, msg);
-
+    public static void d(String tag, String msg) {
+        if (LOG_LEVEL > DEBUG) {
+            if (tag == null) {
+                tag = TAG;
+            }
+            Log.d(tag, msg);
         }
-
     }
 
     /**
-     * 以级别为 w 的形式输出Throwable
+     * 级别为3,总共为6个等级,越大表示越不重要,越容易关闭.
+     *
+     * @param tag
+     * @param msg
      */
-
-    public static void w(String mTag, Throwable tr) {
-
-        if (mDebuggable >= LEVEL_WARN) {
-
-            Log.w(mTag, "", tr);
-
+    public static void i(String tag, String msg) {
+        if (LOG_LEVEL > INFO) {
+            if (tag == null) {
+                tag = TAG;
+            }
+            if (null == msg) {
+                msg = "null";
+            }
+            Log.i(tag, msg);
         }
-
     }
 
     /**
-     * 以级别为 w 的形式输出LOG信息和Throwable
+     * 级别为2,总共为6个等级,越大表示越不重要,越容易关闭.
+     *
+     * @param tag
+     * @param msg
      */
-
-    public static void w(String mTag, String msg, Throwable tr) {
-
-        if (mDebuggable >= LEVEL_WARN && null != msg) {
-
-            Log.w(mTag, msg, tr);
-
+    public static void w(String tag, String msg) {
+        if (LOG_LEVEL > WARN) {
+            if (tag == null) {
+                tag = TAG;
+            }
+            Log.w(tag, msg);
         }
-
     }
 
     /**
-     * 以级别为 e 的形式输出LOG
+     * 级别为1,总共为6个等级,越大表示越不重要,越容易关闭.
+     *
+     * @param tag
+     * @param msg
      */
-
-    public static void e(String mTag, String msg) {
-
-        if (mDebuggable >= LEVEL_ERROR) {
-
-            Log.e(mTag, msg);
-
+    public static void e(String tag, String msg) {
+        if (LOG_LEVEL > ERROR) {
+            if (tag == null) {
+                tag = TAG;
+            }
+            Log.e(tag, msg);
         }
-
     }
 
     /**
-     * 以级别为 e 的形式输出Throwable
+     * 吐丝
+     *
+     * @param context
+     * @param msg     吐丝信息
      */
-
-    public static void e(String mTag, Throwable tr) {
-
-        if (mDebuggable >= LEVEL_ERROR) {
-
-            Log.e(mTag, "", tr);
-
+    @SuppressLint("NewApi")
+    public static void toast(Context context, String msg) {
+        if (LOG_LEVEL > TOAST) {
+            if (msg == null) {
+                msg = "qdw_toast";
+            }
+            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
         }
-
     }
 
-    /**
-     * 以级别为 e 的形式输出LOG信息和Throwable
-     */
-
-    public static void e(String mTag, String msg, Throwable tr) {
-
-        if (mDebuggable >= LEVEL_ERROR && null != msg) {
-
-            Log.e(mTag, msg, tr);
-
+    public static void strictMode() {
+        if (LOG_LEVEL > STRICTMODE) {
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                    .detectDiskReads().detectDiskWrites().detectNetwork() // 这里可以替换为detectAll()
+                    // 就包括了磁盘读写和网络I/O
+                    .penaltyLog() // 打印logcat，当然也可以定位到dropbox，通过文件保存相应的log
+                    .build());
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                    .detectLeakedSqlLiteObjects() // 探测SQLite数据库操作
+                    .penaltyLog() // 打印logcat
+                    .penaltyDeath().build());
         }
-
     }
-
 }
