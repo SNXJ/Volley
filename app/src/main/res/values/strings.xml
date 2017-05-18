@@ -7,5 +7,7 @@
     <string name="generic_server_down">连接服务器失败</string>
     <string name="generic_error">网络异常,请稍后再试</string>
     <string name="main_test">基础包_补丁成功</string>
+    <string name="title_activity_login">Sign in</string>
+
 
 </resources>
