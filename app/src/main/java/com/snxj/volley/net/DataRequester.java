@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.widget.ImageView;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -244,7 +245,7 @@ public class DataRequester {
                         for (Map.Entry<String, String> entry : mapBody.entrySet()) {
                             encodedParams.append(URLEncoder.encode(entry.getKey(), "UTF-8"));
                             encodedParams.append('=');
-                            encodedParams.append(URLEncoder.encode(entry.getValue()==null ? "":entry.getValue(), "UTF-8"));
+                            encodedParams.append(URLEncoder.encode(entry.getValue() == null ? "" : entry.getValue(), "UTF-8"));
                             encodedParams.append('&');
                         }
                         return encodedParams.toString().getBytes("UTF-8");
@@ -252,6 +253,7 @@ public class DataRequester {
                         throw new RuntimeException("Encoding not supported: " + "UTF-8", uee);
                     }
                 }
+
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
                     return mapBody;
@@ -267,6 +269,8 @@ public class DataRequester {
                 }
             };
         }
+        // 自定义请求超时
+        request.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 1, 1.0f));
         mRequestQueue.add(request);
     }
 
@@ -282,7 +286,8 @@ public class DataRequester {
         if (jsonBody != null) {
             LogUtils.d(TAG, request.getBody().toString());
         }
-
+        // 自定义请求超时
+        request.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 1, 1.0f));
         mRequestQueue.add(request);
     }
 
@@ -293,7 +298,8 @@ public class DataRequester {
         JsonArrayRequest request = new JsonArrayRequest(url,
                 mJsonArrayResponseListener,
                 mResponseErrorListener);
-
+        // 自定义请求超时
+        request.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 1, 1.0f));
         mRequestQueue.add(request);
     }
 

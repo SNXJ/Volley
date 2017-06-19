@@ -4,9 +4,11 @@
     <string name="version_name">版本号</string>
     <string name="can_not_find_version_name">版本号获取异常</string>
     <string name="no_internet">无网络连接</string>
+    <string name="server_timer_out">请求超时</string>
     <string name="generic_server_down">连接服务器失败</string>
     <string name="generic_error">网络异常,请稍后再试</string>
     <string name="main_test">基础包_补丁成功</string>
+    <string name="is_wifi_proxy">代理服务不可用</string>
     <string name="title_activity_login">Sign in</string>
 
 

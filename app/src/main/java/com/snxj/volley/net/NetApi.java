@@ -2,6 +2,7 @@ package com.snxj.volley.net;
 
 import android.content.Context;
 
+import com.snxj.volley.R;
 import com.snxj.volley.untils.NetWorkUntil;
 import com.snxj.volley.untils.UIUtils;
 
@@ -34,7 +35,7 @@ public class NetApi {
                                   Map<String, String> paramsMap, final Class<T> clz,
                                   final ResponseListener<T> responseListener) {
         if (NetWorkUntil.isWifiProxy(mContext)) {
-            UIUtils.showToast("代理服务不可用");
+            UIUtils.showToast(mContext.getResources().getString(R.string.is_wifi_proxy));
             return;
         } else {
             NetUntil.newInstance(mContext).doPostHttps(SERVER_URL + url, paramsMap, clz, responseListener);
@@ -56,7 +57,7 @@ public class NetApi {
                                   Map<String, String> paramsMap, final Class<T> clz,
                                   final ResponseListener<T> responseListener) {
         if (NetWorkUntil.isWifiProxy(mContext)) {
-            UIUtils.showToast("代理服务不可用");
+            UIUtils.showToast(mContext.getResources().getString(R.string.is_wifi_proxy));
             return;
         } else {
             NetUntil.newInstance(mContext).doGetHttps(SERVER_URL + url, paramsMap,

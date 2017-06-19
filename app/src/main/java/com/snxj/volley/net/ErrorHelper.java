@@ -41,7 +41,7 @@ public class ErrorHelper {
     public static String getErrorMsg(Object error, Context context) {
         if (error instanceof TimeoutError) {
             return context.getResources().getString(
-                    R.string.generic_server_down);
+                    R.string.server_timer_out);
         } else if (isServerProblem(error)) {
             return handleServerError(error, context);
         } else if (isNetworkProblem(error)) {
